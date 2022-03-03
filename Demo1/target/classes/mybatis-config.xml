@@ -14,7 +14,7 @@
     <!--引入properties文件-->
     <properties resource="jdbc.properties" />
 
-    <!--设置类型别名(用于resultType)-->
+    <!--设置类型别名-->
     <typeAliases>
         <!--
             typeAlias：设置某个类型的别名
@@ -43,8 +43,8 @@
                 transactionManager：设置事务管理方式
                 属性：
                     type="JDBC|MANAGED"
-                    JDBC：表示当前环境中，执行SQL时，使用的是JDBC中原生的事务管理方式: 事务的提交或回滚需要手动处理
-                    MANAGED：被管理，例如被Spring管理
+                    JDBC：表示当前环境中，执行SQL时，使用的是JDBC中原生的事务管理方式，事务的提交或回滚需要手动处理
+                    MANAGED：被管理，例如Spring
             -->
             <transactionManager type="JDBC"/>
             <!--
