@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.mapper.SQLMapper">
+
+    <!--List<User> getUserByLike(@Param("username") String username);-->
+    <select id="getUserByLike" resultType="User">
+        <!--select * from t_user where username like '%#{username}%' 出错的原因:#{}被单引号包围,不能被解析为占位符-->
+        <!--select * from t_user where username like '%${username}%'-->
+        <!--这里就是将 #{}放在 引号外面-->
+        <!--MySQL中的函数
+        select * from t_user where username like concat('%',#{username},'%')
+        推荐下面的方式-->
+        select * from t_user where username like "%"#{username}"%"
+    </select>
+
+    <!--int deleteMore(@Param("ids") String ids);-->
+    <delete id="deleteMore">
+    <!--delete from t_user where id in (#{ids})会拼接 单引号.而in里不能用 单引号-->
+        delete from t_user where id in (${ids})
+    </delete>
+
+    <!--List<User> getUserByTableName(@Param("tableName") String tableName);-->
+    <select id="getUserByTableName" resultType="User">
+    <!--表明也不能加单引号-->
+        select * from ${tableName}
+    </select>
+
+    <!--
+        void insertUser(User user);
+        useGeneratedKeys:设置当前标签中的sql使用了自增的主键
+        keyProperty:将自增的主键的值 赋值给 传输到映射文件中的 参数(User) 的某个属性(id)
+        就是 给调用者的User对象 赋值
+    -->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user values(null,#{username},#{password},#{age},#{sex},#{email})
+    </insert>
+
+</mapper>
