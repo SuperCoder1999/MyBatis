@@ -45,12 +45,24 @@ public class PageHelperTest {
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
             SqlSession sqlSession = sqlSessionFactory.openSession(true);
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
-            //Page<Object> page = PageHelper.startPage(2, 4);
-            PageHelper.startPage(6, 4);
+
+            //在查询之前开启分页功能,在为查询之前,page1只有
+            //内容:Page{count=true, pageNum=2, pageSize=4, startRow=4, endRow=8, total=0, pages=0, reasonable=null, pageSizeZero=null}[]
+            //直到查询操作完成后.page1才被赋值查询的记录集合
+            // (疑问:为什么开启分页功能会影响查询?未来的查询都会变成分页的?)
+            /*Page<Object> page1 = PageHelper.startPage(2, 4);
+            System.out.println(page1);
             List<Emp> list = mapper.selectByExample(null);
-            PageInfo<Emp> page = new PageInfo<Emp>(list, 5);
-            //list.forEach(emp -> System.out.println(emp));
-            System.out.println(page);
+            for (Emp emp : list) { System.out.println(emp);
+            }*/
+
+            //获取详细的查询信息
+            PageHelper.startPage(2, 4);
+            List<Emp> list2 = mapper.selectByExample(null);
+            PageInfo<Emp> pageInfo = new PageInfo<Emp>(list2, 3);//navigatePages:导航页数,即导航栏显示几个页码供用户点击
+            System.out.println(pageInfo);
+            for (Emp emp : list2) { System.out.println(emp);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

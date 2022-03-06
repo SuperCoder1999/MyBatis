@@ -27,16 +27,28 @@ public class MBGTest {
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
             SqlSession sqlSession = sqlSessionFactory.openSession(true);
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
+
             //查询所有数据
             /*List<Emp> list = mapper.selectByExample(null);
-            list.forEach(emp -> System.out.println(emp));*/
+            //list.forEach(emp -> System.out.println(emp));
+            for (Emp emp : list) {
+                System.out.println(emp);
+            }*/
+
             //根据条件查询
-            /*EmpExample example = new EmpExample();
+            EmpExample example = new EmpExample();
+            //QBC(queryByCriteria)风格的增删改查
             example.createCriteria().andEmpNameEqualTo("张三").andAgeGreaterThanOrEqualTo(20);
-            example.or().andDidIsNotNull();
+            example.or().andDidIsNotNull();// or 连接两个 and条件
+            //select eid, emp_name, age, sex, email, did from t_emp
+            // WHERE ( emp_name = ? and age >= ? ) or( did is not null )
             List<Emp> list = mapper.selectByExample(example);
-            list.forEach(emp -> System.out.println(emp));*/
-            mapper.updateByPrimaryKeySelective(new Emp(1,"admin",22,null,"456@qq.com",3));
+            //list.forEach(emp -> System.out.println(emp));
+            for (Emp emp : list) {
+                System.out.println(emp);
+            }
+
+            //mapper.updateByPrimaryKeySelective(new Emp(1,"admin",22,null,"456@qq.com",3));
         } catch (IOException e) {
             e.printStackTrace();
         }
